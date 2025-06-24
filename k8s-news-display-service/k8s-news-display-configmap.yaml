@@ -6,12 +6,10 @@ data:
   application-dev.yml: |
     server:
       port: 8080
-    # url 이랑 드라이버클래스네임은 정확한지 확인해야함 - 0621
     spring:
       datasource:
-        url: jdbc:mariadb://k8s-external-news-display-maria-service:3306/mini2?serverTimezone=UTC&useSSL=true&autoReconnect=true&useUnicode=true&characterEncoding=utf-8
-        
-        driver-class-name: org.mariadb.jdbc.Driver
+        url: jdbc:mysql://k8s-external-news-display-maria-service:3306/news?serverTimezone=UTC&useSSL=true&autoReconnect=true&useUnicode=true&characterEncoding=utf-8
+        driver-class-name: com.mysql.cj.jdbc.Driver
         hikari:
           connection-test-query: SELECT 1 # HikariCP 유효성 검사 추가
       jpa:
@@ -33,12 +31,12 @@ data:
       kafka:
         
         producer:
-          bootstrap-servers: k8s-external-news-display-kafka-service:9092
+          bootstrap-servers: k8s-external-kafka-service:9092
           key-serializer: org.apache.kafka.common.serialization.StringSerializer
           value-serializer: org.springframework.kafka.support.serializer.JsonSerializer # ✅ 이 부분 변경
 
         consumer:
-          bootstrap-servers: k8s-external-news-display-kafka-service:9092
+          bootstrap-servers: k8s-external-kafka-service:9092
           group-id: news-display-service-group
           enable-auto-commit: false # MANUAL AckMode 사용 시 필수
           key-deserializer: org.apache.kafka.common.serialization.StringDeserializer

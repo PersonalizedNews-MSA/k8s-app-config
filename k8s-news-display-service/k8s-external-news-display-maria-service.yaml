@@ -13,6 +13,6 @@ metadata:
   name: k8s-external-news-display-maria-service
 subsets:
   - addresses:
-      - ip: 172.30.1.29
+      - ip: 192.168.219.103
     ports:
       - port: 13301
