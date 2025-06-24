@@ -16,3 +16,7 @@ data:
                 uri: http://k8s-favorite-service:8080
                 predicates:
                   - Path=/api/favorite/v1/**
+              - id: news-display
+                uri: http://k8s-news-display-service:8080
+                predicates:
+                  - Path=/api/news-display/v1/**
