@@ -24,4 +24,7 @@ data:
         open-in-view: false
 
       kafka:
-        bootstrap-servers: k8s-external-kafka-service:9092
+        producer:
+          bootstrap-servers: k8s-external-kafka-service:9092
+          key-serializer: org.apache.kafka.common.serialization.StringSerializer
+          value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
