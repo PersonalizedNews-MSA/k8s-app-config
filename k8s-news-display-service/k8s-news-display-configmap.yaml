@@ -20,6 +20,13 @@ data:
         properties:
           hibernate:
             format_sql: true
+      
+      data:
+        redis:
+          host: k8s-external-redis-service
+          port: 6379
+          password: ""
+          timeout: 5000
 
       ai:
         openai:
