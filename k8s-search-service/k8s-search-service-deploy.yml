@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k8s-search-deployment
+spec:
+  replicas: 3  # 원하는 파드 복제본 수 (기본값: 1)
+  selector:
+    matchLabels:
+      app: searchservice  # 템플릿의 labels와 일치해야 함
+  template:
+    metadata:
+      labels:
+        app: searchservice  # selector와 일치해야 함
+    spec:
+      containers:
+      - name: searchservice
+        image: wkdnffla3/searchservice:0.0.1
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+        env:
+          - name: SPRING_PROFILES_ACTIVE
+            value: dev
+        volumeMounts: 
+            - mountPath: /etc/config
+              name: search-service-config-volume
+            - mountPath: /etc/secret
+              name: search-service-secret-volume
+      volumes: 
+        - name: search-service-config-volume
+          configMap:
+            name: search-service-config
+            items: 
+              - key: application-dev.yml
+                path: application-dev.yml
+        - name: search-service-secret-volume
+          secret:
+            secretName: search-service-secret
+            items:
+              - key: application-secret.yml
+                path: application-secret.yml
