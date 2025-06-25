@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k8s-summary-deployment
+spec:
+  replicas: 3  # 원하는 파드 복제본 수 (기본값: 1)
+  selector:
+    matchLabels:
+      app: summaryservice  # 템플릿의 labels와 일치해야 함
+  template:
+    metadata:
+      labels:
+        app: summaryservice  # selector와 일치해야 함
+    spec:
+      containers:
+      - name: summaryservice
+        image: wkdnffla3/summaryservice:0.0.1
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+        env:
+          - name: SPRING_PROFILES_ACTIVE
+            value: dev
+        volumeMounts: 
+            - mountPath: /etc/config
+              name: summary-service-config-volume
+            - mountPath: /etc/secret
+              name: summary-service-secret-volume
+      volumes: 
+        - name: summary-service-config-volume
+          configMap:
+            name: summary-service-config
+            items: 
+              - key: application-dev.yml
+                path: application-dev.yml
+        - name: summary-service-secret-volume
+          secret:
+            secretName: summary-service-secret
+            items:
+              - key: application-secret.yml
+                path: application-secret.yml

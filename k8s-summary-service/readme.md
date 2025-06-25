@@ -1,0 +1,1 @@
+k8s-summary-service-secret은 ai api 값이 노출되어 있어 따로 공유하겠습니다!
